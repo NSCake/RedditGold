@@ -1,0 +1,9 @@
+Package: com.pantsthief.redditgold
+Name: RedditGold
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Enhancements to the Reddit app
+Maintainer: Tanner Bennett
+Author: Tanner Bennett
+Section: Tweaks
