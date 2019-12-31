@@ -28,13 +28,13 @@
 }
 @end
 
-%hook CommentsViewController
+%hook PostDetailViewController
 
 - (void)viewDidLoad {
     %orig;
 
-    UILongPressGestureRecognizer *gesture = [
-        [UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPressComment:)
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc]
+        initWithTarget:self action:@selector(didLongPressComment:)
     ];
     gesture.minimumPressDuration = .2;
     [self.feedCollectionView addGestureRecognizer:gesture];
@@ -55,8 +55,9 @@
             point.x - 22, point.y - 22, 44, 44
         ) inView:self.feedCollectionView];
 
-        Comment *comment = self.commentsManager.flattenedObjects[ip.row];
-
+        // 4.3.0
+        // Comment *comment = self.commentsManager.flattenedObjects[ip.row];
+        Comment *comment = self.delegator.presenter.currentComments[ip.row].comment;
 
         menu.menuItems = @[
             [TBMenuItem title:@"Text" action:@selector(copyText:) copy:comment.bodyAttributedText.string],

@@ -42,19 +42,46 @@
 @property NSString *sharingPermalinkIncludingDomain;
 @end
 
+// Usually external
+@interface VideoMedia : NSObject
+@property NSString *embedHTML;
+@property CGSize size;
+@property NSURL *url;
+@end
+
+// Always a reddit-hosted video
+@interface StreamingMedia : NSObject
+@property NSURL *hlsURL;
+@property BOOL isGIF;
+@property CGSize size;
+@end
+
+@interface Media : NSObject
+@property BOOL hasLargeAssets;
+@property NSString *mediaId;
+@property id /* StillMedia */ still;
+@property id /* AnimatedMedia */ animated;
+@property StreamingMedia *streaming;
+// Original URL for external media like gfycat
+@property VideoMedia *video;
+@end
+
 @interface Post : NSObject
 @property BOOL isHlsVideo;
-@property NSURL *linkURL;
+@property BOOL isHlsGif;
+@property BOOL isIngestedGif;
+@property NSURL *linkURL; // Note: original URL of media, if any
 @property NSString *internalPermalinkIncludingDomain;
 @property NSString *sharingPermalinkIncludingDomain;
+@property NSString *domain;
 
 @property BOOL shouldBlurContent;
 @property BOOL hidden;
 
-@property (readonly) NSString *author;
-@property (readonly) NSString *title;
-@property (readonly) Subreddit *subreddit;
-
+@property NSString *author;
+@property NSString *title;
+@property Subreddit *subreddit;
+@property Media *media;
 @end
 
 @interface SubredditFeedViewController : UIViewController
@@ -64,7 +91,7 @@
 @interface Section : NSObject
 @property UICollectionView *collectionView;
 @property UILabel *headerLabel;
-@end;
+@end
 
 @interface ShareSheetViewController : UIViewController
 @property Post *post;
@@ -100,9 +127,22 @@
 @property NSArray<Comment*> *flattenedObjects;
 @end
 
-@interface CommentsViewController : UIViewController <UICollectionViewDelegate>
+// 4.48
+@interface CommentTreeNode : NSObject
+@property (readonly) Comment *comment;
+@end
+@interface PostDetailPresenter : NSObject
+@property (readonly) NSArray<CommentTreeNode *> *currentComments;
+@end
+@interface PostDetailDelegator : NSObject
+@property (readonly) PostDetailPresenter *presenter;
+@end
+
+// Previously called CommentsViewController
+@interface PostDetailViewController : UIViewController <UICollectionViewDelegate>
 @property UICollectionView *feedCollectionView;
-@property ThreadedObjectManager *commentsManager;
+// @property ThreadedObjectManager *commentsManager;
+@property (readonly) PostDetailDelegator *delegator;
 
 - (void)copyStorageFromIdx:(NSUInteger)idx of:(UIMenuController *)controller;
 @end
@@ -130,6 +170,46 @@
 
 @interface LayoutGuidance : NSObject
 @property CGFloat gridPadding;
+@end
+
+// RE'd after 4.48
+
+@interface ShareSheetData : NSObject
++ (instancetype)dataWithSender:(id)sender analyticsPageType:(NSString *)type;
+@property (readonly) NSURL *shareablePostURL;
+@property UIImage *image;
+@property Post *post;
+@property NSURL *url;
+@end
+
+@interface TheatreMediaItem : NSObject
+@property NSString *author;
+@property NSString *shortDomain; // ie gfycat
+@property NSURL *contentURL;
+@property NSDate *createdAt;
+@property BOOL isGif;
+@property BOOL isHlsVideo; // isVideo is also YES
+@property BOOL isImage;
+@property BOOL isNSFW;
+@property BOOL isSpoiler;
+@property BOOL isVideo;
+@property NSString *mediaId;
+@property NSString *title;
+@property Subreddit *subreddit;
+@property Post *originalPost;
+@property NSUInteger postType;
+@end
+
+@interface UIViewController (Reddit)
+- (void)presentShareViewForData:(ShareSheetData *)data;
+@end
+
+@interface TheatreViewController : UIViewController @end
+
+// Reddit's AsyncDisplayKit classes
+
+@interface FeedPostCommentBarNode : NSObject
+@property (readonly) UIViewController *delegate;
 @end
 
 #pragma mark Macros

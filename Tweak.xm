@@ -8,6 +8,11 @@
 
 #import "Interfaces.h"
 
+// Disable analytics
+%hook AnalyticsManager
+- (void)logAnalyticsEvent:(id)event { }
+%end
+
 %hook Account
 - (BOOL)shouldIgnoreSuggestedCommentSort { return YES; }
 %end
@@ -28,17 +33,18 @@
 - (BOOL)quarantined { return NO; }
 %end
 
-%hook AVAudioSession
-- (void)setCategory:(NSString *)category {
-    %orig(AVAudioSessionCategorySoloAmbient);
-}
-- (BOOL)setCategory:(NSString *)category error:(NSError *)error {
-    return %orig(AVAudioSessionCategorySoloAmbient, error);
-}
-- (BOOL)setCategory:(NSString *)category withOptions:(AVAudioSessionCategoryOptions)options error:(NSError *)error {
-    return %orig(AVAudioSessionCategorySoloAmbient, options, error);
-}
-%end
+// Not necessary after 4.3.0
+// %hook AVAudioSession
+// - (void)setCategory:(NSString *)category {
+//     %orig(AVAudioSessionCategorySoloAmbient);
+// }
+// - (BOOL)setCategory:(NSString *)category error:(NSError *)error {
+//     return %orig(AVAudioSessionCategorySoloAmbient, error);
+// }
+// - (BOOL)setCategory:(NSString *)category withOptions:(AVAudioSessionCategoryOptions)options error:(NSError *)error {
+//     return %orig(AVAudioSessionCategorySoloAmbient, options, error);
+// }
+// %end
 
 %hook HlsPlayerView
 - (id)initWithFrame:(CGRect)frame {
