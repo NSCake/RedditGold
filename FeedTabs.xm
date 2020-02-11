@@ -90,7 +90,43 @@ static CGFloat padding = CGFLOAT_MAX;
             @"quityourbullshit", @"freefolk", @"mildlyinteresting", @"AdviceAnimals",
             @"PewdiepieSubmissions", @"iamverysmart", @"ShitPostCrusaders", @"facepalm",
             @"madlads", @"apexlegends", @"rareinsults", @"lotrmemes", @"terriblefacebookmemes",
-            @"OurPresident", @"VoteBlue", @"blunderyears"
+            @"OurPresident", @"VoteBlue", @"blunderyears", @"SandersForPresident", @"CFB",
+            @"JustNeckbeardThings", @"PoliticalCompassMemes", @"MMA", @"niceguys", @"soccer",
+            @"TheRightCantMeme", @"ToiletPaperUSA", @"FragileWhiteRedditor", @"badwomensanatomy",
+            @"trashy", @"ABoringDystopia", @"blackmagicfuckery", @"NatureIsFuckingLit", @"cringe"
+        ]];
+    });
+    NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(Post *post, id bindings) {
+        return ![filtered containsObject:post.subreddit.displayName];
+    }];
+    posts = [posts filteredArrayUsingPredicate:pred];
+    %orig;
+}
+%end
+
+%hook PopularFeedPresenter
+- (NSString *)title { return @"All"; }
+
+- (void)configureWithURLString:(NSString *)url {
+    %orig(@"https://reddit.com/r/all");
+}
+
+- (void)setCurrentObjects:(NSArray<Post *> *)posts {
+    static NSSet *filtered = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        filtered = [NSSet setWithArray:@[
+            @"politics", @"PoliticalHumor", @"worldpolitics", @"The_Mueller",
+            @"news", @"worldnews", @"LateStageCapitalism", @"polandball", @"pics",
+            @"PewdiepieSubmissions", @"leagueoflegends", @"BlackPeopleTwitter",
+            @"insanepeoplefacebook", @"imsorryjon", @"insaneparents", @"dndmemes",
+            @"quityourbullshit", @"freefolk", @"mildlyinteresting", @"AdviceAnimals",
+            @"PewdiepieSubmissions", @"iamverysmart", @"ShitPostCrusaders", @"facepalm",
+            @"madlads", @"apexlegends", @"rareinsults", @"lotrmemes", @"terriblefacebookmemes",
+            @"OurPresident", @"VoteBlue", @"blunderyears", @"SandersForPresident", @"CFB",
+            @"JustNeckbeardThings", @"PoliticalCompassMemes", @"MMA", @"niceguys", @"soccer",
+            @"TheRightCantMeme", @"ToiletPaperUSA", @"FragileWhiteRedditor", @"badwomensanatomy",
+            @"trashy", @"ABoringDystopia", @"blackmagicfuckery", @"NatureIsFuckingLit", @"cringe"
         ]];
     });
     NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(Post *post, id bindings) {
