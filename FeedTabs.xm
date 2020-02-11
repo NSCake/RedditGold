@@ -139,7 +139,7 @@ static CGFloat padding = CGFLOAT_MAX;
 
 // Use my custom tabs
 
-// %hook HomeViewController
+%hook HomeViewController
 // %property (nonatomic, retain) MainFeedViewController *fortnite;
 
 // - (void)viewDidLoad {
@@ -151,4 +151,9 @@ static CGFloat padding = CGFLOAT_MAX;
 
 //     [self configureWithControllers:tabs];
 // }
-// %end
+
+- (void)setFeedViewControllers:(NSArray *)controllers {
+    controllers = @[controllers[1], controllers[2]];
+    %orig;
+}
+%end
