@@ -8,6 +8,17 @@
 
 #import "Interfaces.h"
 
+// Prevent app from crashing in the background on iOS 13
+%hook UIApplication
+- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithExpirationHandler:(void (^)(void))handler {
+    return UIBackgroundTaskInvalid;
+}
+
+- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithName:(NSString *)taskName expirationHandler:(void (^)(void))handler {
+    return UIBackgroundTaskInvalid;
+}
+%end
+
 // Disable analytics
 %hook AnalyticsManager
 - (void)logAnalyticsEvent:(id)event { }
