@@ -137,6 +137,12 @@ static CGFloat padding = CGFLOAT_MAX;
 }
 %end
 
+// These show up in the array of posts, make them respond to -subreddit
+%hook Reddit.StreamManager
+%new
+- (NSString *)subreddit { return nil; }
+%end
+
 // Use my custom tabs
 
 %hook HomeViewController
