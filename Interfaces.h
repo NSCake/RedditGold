@@ -14,6 +14,16 @@
 
 #pragma mark Interfaces
 
+@interface RedditService : NSObject
++ (NSInteger)defaultFeedMode;
+- (void)hidePost:(id)post completion:(id)handler;
+@end
+
+@interface AccountManager : NSObject
+@property (readonly, class) AccountManager *sharedManager;
+@property (readonly) RedditService *currentService;
+@end
+
 @interface AppSettings : NSObject
 + (NSInteger)defaultFeedMode;
 @end
@@ -76,7 +86,7 @@
 @property NSString *domain;
 
 @property BOOL shouldBlurContent;
-@property BOOL hidden;
+@property BOOL isHidden;
 
 @property NSString *author;
 @property NSString *title;
@@ -209,8 +219,15 @@
 
 // Reddit's AsyncDisplayKit classes
 
-@interface FeedPostCommentBarNode : NSObject
+@interface ASDisplayNode : NSObject
+@property (readonly) UIView *view;
+@end
+
+@interface FeedPostCommentBarNode : ASDisplayNode
 @property (readonly) UIViewController *delegate;
+@property (readonly) Post *post;
+
+@property ASDisplayNode *actionButtonNode;
 @end
 
 #pragma mark Macros
