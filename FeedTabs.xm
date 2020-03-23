@@ -144,6 +144,10 @@ static CGFloat padding = CGFLOAT_MAX;
 %new
 - (NSString *)subreddit { return nil; }
 %end
+%hook Carousel
+%new
+- (NSString *)subreddit { return nil; }
+%end
 
 // Use my custom tabs
 

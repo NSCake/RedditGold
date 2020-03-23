@@ -62,7 +62,7 @@
         menu.menuItems = @[
             [TBMenuItem title:@"Text" action:@selector(copyText:) copy:comment.bodyAttributedText.string],
             [TBMenuItem title:@"Source" action:@selector(copySource:) copy:comment.bodyText],
-            [TBMenuItem title:@"Link" action:@selector(copyLink:) copy:comment.permalink]
+            [TBMenuItem title:@"Link" action:@selector(copyLink:) copy:comment.sharingPermalinkIncludingDomain]
         ];
 
         [menu update];
@@ -159,7 +159,7 @@
 
 - (void)didTapMessagesActionButton:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
-    [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:self.post.internalPermalinkIncludingDomain];
+    [UIPasteboard generalPasteboard].URL = [NSURL URLWithString:self.post.sharingPermalinkIncludingDomain];
 }
 
 %end

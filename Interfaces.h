@@ -119,6 +119,7 @@
 @property NSString *bodyText;
 @property NSAttributedString *bodyAttributedText;
 @property NSString *pkWithoutPrefix;
+@property NSString *sharingPermalinkIncludingDomain;
 @property NSString *permalink;
 @property NSString *linkTitle;
 @end
