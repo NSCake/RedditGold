@@ -93,7 +93,8 @@ static CGFloat padding = CGFLOAT_MAX;
             @"OurPresident", @"VoteBlue", @"blunderyears", @"SandersForPresident", @"CFB",
             @"JustNeckbeardThings", @"PoliticalCompassMemes", @"MMA", @"niceguys", @"soccer",
             @"TheRightCantMeme", @"ToiletPaperUSA", @"FragileWhiteRedditor", @"badwomensanatomy",
-            @"trashy", @"ABoringDystopia", @"blackmagicfuckery", @"NatureIsFuckingLit", @"cringe"
+            @"trashy", @"ABoringDystopia", @"blackmagicfuckery", @"NatureIsFuckingLit", @"cringe",
+            @"TwoXChromosomes", @"SelfAwarewolves", @"Coronavirus", @"MurderedByWords",
         ]];
     });
     NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(Post *post, id bindings) {
@@ -126,7 +127,8 @@ static CGFloat padding = CGFLOAT_MAX;
             @"OurPresident", @"VoteBlue", @"blunderyears", @"SandersForPresident", @"CFB",
             @"JustNeckbeardThings", @"PoliticalCompassMemes", @"MMA", @"niceguys", @"soccer",
             @"TheRightCantMeme", @"ToiletPaperUSA", @"FragileWhiteRedditor", @"badwomensanatomy",
-            @"trashy", @"ABoringDystopia", @"blackmagicfuckery", @"NatureIsFuckingLit", @"cringe"
+            @"trashy", @"ABoringDystopia", @"blackmagicfuckery", @"NatureIsFuckingLit", @"cringe",
+            @"TwoXChromosomes", @"SelfAwarewolves", @"Coronavirus", @"MurderedByWords",
         ]];
     });
     NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(Post *post, id bindings) {
