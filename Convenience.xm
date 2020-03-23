@@ -163,3 +163,27 @@
 }
 
 %end
+
+%hook FeedPostCommentBarNode
+
+- (id)initWithPost:(Post *)post options:(id)options {
+    self = %orig;
+    NSLog(@"initWithPost:");
+
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc]
+        initWithTarget:self action:@selector(__didLongPressActionButton:)
+    ];
+
+    [self.actionButtonNode.view addGestureRecognizer:gesture];
+
+    return self;
+}
+
+%new
+- (void)__didLongPressActionButton:(UIGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        [[%c(AccountManager) sharedManager].currentService hidePost:self.post completion:nil];
+    }
+}
+
+%end
