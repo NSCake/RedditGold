@@ -44,6 +44,10 @@
 - (BOOL)quarantined { return NO; }
 %end
 
+%hook MainTabBarController
+- (id)coinSaleNavigationButton { return [UIBarButtonItem new]; }
+%end
+
 // Not necessary after 4.3.0
 // %hook AVAudioSession
 // - (void)setCategory:(NSString *)category {
