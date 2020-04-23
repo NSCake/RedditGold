@@ -6,6 +6,10 @@
 // Copyright © 2018 Tanner Bennett. All rights reserved.
 //
 
+%hook AccountManager
+- (void)removeAccount:(NSInteger)account deletingAccountData:(NSInteger)data { }
+%end
+
 // %hook CarouselFetcher
 // - (void)fetchCarouselForDiscoveryUnit:(id)unit carousel:(id)car withCompletion:(void(^)(id block, BOOL success))original {
 //     original = [original copy];
