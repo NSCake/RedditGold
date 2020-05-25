@@ -4,6 +4,6 @@ Depends: mobilesubstrate
 Version: 1.0.0
 Architecture: iphoneos-arm
 Description: Enhancements to the Reddit app
-Maintainer: Tanner Bennett
-Author: Tanner Bennett
+Maintainer: Tanner Bennett <thepantsthief@me.com>
+Author: Tanner Bennett <thepantsthief@me.com>
 Section: Tweaks
