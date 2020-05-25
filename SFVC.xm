@@ -11,9 +11,22 @@
 %hook SFSafariViewController
 
 - (id)initWithURL:(NSURL *)url configuration:(SFSafariViewControllerConfiguration *)config {
-    self.preferredBarTintColor = [UIColor blackColor];
+    // self.preferredBarTintColor = [UIColor blackColor];
     config.entersReaderIfAvailable = YES;
     return %orig;
 }
 
+%end
+
+%hook RichTextDisplayNode
+- (void)richTextTextNode:(id)node didTapURL:(NSURL *)url atPoint:(CGPoint)point {
+    NSString *domain = url.host;
+    if ([domain hasSuffix:@"youtube.com"] || [domain hasSuffix:@"youtu.be"]) {
+        [UIApplication.sharedApplication openURL:url];
+    } else if ([domain hasSuffix:@"twitter.com"]) {
+        [UIApplication.sharedApplication openURL:url];
+    } else {
+        %orig;
+    }
+}
 %end
