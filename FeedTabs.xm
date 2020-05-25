@@ -151,7 +151,9 @@ static CGFloat padding = CGFLOAT_MAX;
             @"JustNeckbeardThings", @"PoliticalCompassMemes", @"MMA", @"niceguys", @"soccer",
             @"TheRightCantMeme", @"ToiletPaperUSA", @"FragileWhiteRedditor", @"badwomensanatomy",
             @"trashy", @"ABoringDystopia", @"blackmagicfuckery", @"NatureIsFuckingLit", @"cringe",
-            @"TwoXChromosomes", @"SelfAwarewolves", @"Coronavirus", @"MurderedByWords",
+            @"TwoXChromosomes", @"SelfAwarewolves", @"Coronavirus", @"MurderedByWords", @"funny", 
+            @"FuckYouKaren", @"WhitePeopleTwitter", @"LeopardsAteMyFace", @"BanVideoGames",
+            @"Gamingcirclejerk", @"AnimalCrossing", @"WayOfTheBern", 
         ]];
     });
 
