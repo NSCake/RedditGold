@@ -6,9 +6,9 @@
 // Copyright © 2018 Tanner Bennett. All rights reserved.
 //
 
-%hook CarouselFetcher
-- (void)fetchCarouselForDiscoveryUnit:(id)unit carousel:(id)car withCompletion:(void(^)(id block, BOOL success))original {
-    original(nil, NO);
+%hook Carousel
+- (BOOL)isHiddenByUserWithAccountSettings:(id)settings {
+    return YES;
 }
 %end
 
