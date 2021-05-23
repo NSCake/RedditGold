@@ -15,6 +15,13 @@
 }
 %end
 
+%hook HomeViewController
+- (NSUInteger)indexOfControllerWithHomeFeedType:(NSUInteger)type {
+    return 0;
+}
+- (void)showForYouFeedBadgeIfNeeded { }
+%end
+
 %hook CommentCell
 - (void)_handleMenuGesture { return; }
 
