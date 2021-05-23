@@ -175,3 +175,29 @@
 }
 
 %end
+
+void CommentComposeHook(CommentComposeViewController *self) {
+    UIBarButtonItem *item = self.navigationItem.rightBarButtonItem;
+    self.navigationItem.rightBarButtonItem = nil;
+    
+    BaseButton *button = (id)item.customView;
+    
+    CommentComposeboardAccessoryView *toolbar = (id)self.composeView.replyTextView.inputAccessoryView;
+    toolbar.rightButton.hidden = NO;
+    toolbar.rightStackView.hidden = YES;
+    [toolbar.rightButton setAttributedTitleWithString:@"REPLY"];
+    [toolbar.rightButton setValue:[button valueForKey:@"_targetActions"] forKey:@"_targetActions"];
+}
+
+%hook CommentComposeViewController
+- (void)viewDidLoad {
+    %orig;
+    CommentComposeHook((id)self);
+}
+%end
+%hook CommentReplyViewController
+- (void)viewDidLoad {
+    %orig;
+    CommentComposeHook((id)self);
+}
+%end
