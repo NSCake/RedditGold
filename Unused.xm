@@ -6,6 +6,8 @@
 // Copyright © 2018 Tanner Bennett. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 %hook AccountManager
 - (void)removeAccount:(NSInteger)account deletingAccountData:(NSInteger)data { }
 %end

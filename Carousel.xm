@@ -6,6 +6,8 @@
 // Copyright © 2018 Tanner Bennett. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 %hook Carousel
 - (BOOL)isHiddenByUserWithAccountSettings:(id)settings {
     return YES;

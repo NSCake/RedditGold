@@ -6,6 +6,8 @@
 // Copyright © 2018 Tanner Bennett. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 %hook NSURLSession
 - (NSURLSessionDataTask *)dataTaskWithRequest:(NSMutableURLRequest *)request completionHandler:(id)completionHandler {
     if ([request.URL.path containsString:@"subreddits/search.json"]) { // || [request.URL.path containsString:@"search_reddit_names.json"]) {
