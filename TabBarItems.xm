@@ -27,6 +27,13 @@
     UITabBarItem *item = tabs.lastObject.tabBarItem;
     item.imageInsets = tabs.firstObject.tabBarItem.imageInsets;
     item.image = item.selectedImage = [UIImage imageNamed:@"icon_cake_24"];
+
+    // Add long press gesture recognizer to middle tab bar item
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc]
+        initWithTarget:userDrawer action:@selector(pressedSignUpOrLogInButton:)
+    ];
+    gesture.minimumPressDuration = .2;
+    [self.postButton addGestureRecognizer:gesture];
     
     %orig(tabs);
 }
