@@ -8,6 +8,13 @@
 
 #import "Interfaces.h"
 
+// Was possibly just called BaseNavigationController at one point?
+%hook BaseNavigationViewController
+- (void)setModalPresentationStyle:(NSInteger)style {
+    %orig(UIModalPresentationPageSheet);
+}
+%end
+
 %hook CommentCell
 - (void)_handleMenuGesture { return; }
 
