@@ -34,6 +34,14 @@
 }
 %end
 
+%hook PostDetailPresenter
+- (void)fetchMoreContentIfNecessary { }
+
+- (id)createTruncatedCommentNetworkSource {
+    return [self createDefaultCommentNetworkSource];
+}
+%end
+
 @implementation TBMenuItem
 + (instancetype)title:(NSString *)title action:(SEL)action copy:(NSString *)string {
     TBMenuItem *item = [[TBMenuItem alloc] initWithTitle:title action:action];
@@ -149,7 +157,6 @@
 
 - (id)initWithPost:(Post *)post options:(id)options {
     self = %orig;
-    NSLog(@"initWithPost:");
 
     UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc]
         initWithTarget:self action:@selector(__didLongPressActionButton:)
