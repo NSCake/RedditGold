@@ -24,6 +24,8 @@
 
 @interface PostDetailPresenter : NSObject
 @property (readonly) NSArray<CommentTreeNode *> *currentComments;
+- (id)createTruncatedCommentNetworkSource;
+- (id)createDefaultCommentNetworkSource;
 @end
 
 @interface PostDetailDelegator : NSObject

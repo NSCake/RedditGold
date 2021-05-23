@@ -55,6 +55,7 @@
 @property VideoMedia *video;
 @end
 
+@class RichText;
 @interface Post : NSObject
 @property BOOL isHlsVideo;
 @property BOOL isHlsGif;
@@ -63,6 +64,7 @@
 @property NSString *internalPermalinkIncludingDomain;
 @property NSString *sharingPermalinkIncludingDomain;
 @property NSString *domain;
+@property NSString *selfText;
 
 @property BOOL shouldBlurContent;
 @property BOOL isHidden;
@@ -71,6 +73,10 @@
 @property NSString *title;
 @property Subreddit *subreddit;
 @property Media *media;
+
+@property NSString *selfPostText;
+@property NSAttributedString *selfPostRichTextAttributed;
+@property RichText *selfPostRichText;
 @end
 
 @interface Comment : NSObject
@@ -119,4 +125,17 @@
 
 @interface ThreadedObjectManager : NSObject
 @property NSArray<Comment*> *flattenedObjects;
+@end
+
+@interface RichTextConfig : NSObject
+@property (readonly, class) RichTextConfig *currentConfig;
+@end
+
+@interface RichTextElementBase : NSObject
+- (id)attributedStringWithConfig:(RichTextConfig *)config;
+@end
+
+@interface RichText : NSObject
+@property (readonly) NSArray<RichTextElementBase *> *elements;
+- (id)attributedStringWithConfig:(RichTextConfig *)config;
 @end

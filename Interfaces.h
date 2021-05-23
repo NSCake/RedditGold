@@ -11,6 +11,9 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import "../includes/BlockDescription.h"
+
+#import "Reddit/UIKit.h"
 #import "Reddit/Models.h"
 #import "Reddit/API.h"
 #import "Reddit/ASDisplayNodes.h"
@@ -26,6 +29,41 @@
 @interface TBMenuItem : UIMenuItem
 + (instancetype)title:(NSString *)title action:(SEL)action copy:(NSString *)string;
 @property (nonatomic, readonly) NSString *storage;
+@end
+
+@interface UIBarItem (Private)
+@property (readonly) UIControl *view;
+@end
+
+@interface FLEXManager : NSObject
+- (void)showExplorer;
+- (void)hideExplorer;
+- (void)toggleExplorer;
+@end
+
+@interface FLEXObjectExplorerFactory : NSObject
++ (UIViewController *)explorerViewControllerForObject:(id)object;
+@end
+
+@class FLEXShortcutsFactory;
+typedef FLEXShortcutsFactory *(^FLEXShortcutsFactoryNames)(NSArray *names);
+typedef void (^FLEXShortcutsFactoryTarget)(Class targetClass);
+
+@interface FLEXShortcutsFactory : NSObject
+
++ (NSArray *)shortcutsForObjectOrClass:(id)objectOrClass;
+
+@property (nonatomic, readonly, class) FLEXShortcutsFactory *append;
+@property (nonatomic, readonly, class) FLEXShortcutsFactory *prepend;
+@property (nonatomic, readonly, class) FLEXShortcutsFactory *replace;
+
+@property (nonatomic, readonly) FLEXShortcutsFactoryNames properties;
+@property (nonatomic, readonly) FLEXShortcutsFactoryNames classProperties;
+@property (nonatomic, readonly) FLEXShortcutsFactoryNames ivars;
+@property (nonatomic, readonly) FLEXShortcutsFactoryNames methods;
+@property (nonatomic, readonly) FLEXShortcutsFactoryNames classMethods;
+@property (nonatomic, readonly) FLEXShortcutsFactoryTarget forClass;
+
 @end
 
 

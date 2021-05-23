@@ -6,6 +6,8 @@
 //  Copyright © 2020 Tanner Bennett. All rights reserved.
 //
 
+#import "Views.h"
+
 #pragma mark Reddit's Categories
 @interface UIViewController (Reddit)
 - (void)presentShareViewForData:(ShareSheetData *)data;
@@ -54,6 +56,7 @@
 
 #pragma mark MainTabBarController
 @interface MainTabBarController : UITabBarController
+@property (readonly) UIButton *postButton;
 @end
 
 #pragma mark MainFeedViewController
@@ -115,6 +118,7 @@ typedef NS_ENUM(NSUInteger, UserDrawerAction) {
 @interface UserDrawerViewController : UIViewController
 
 - (id)initWithAccountManager:(AccountManager *)manager;
+- (void)pressedSignUpOrLogInButton:(id)sender;
 
 @property (readonly) UIButton *closeButton;
 @property (readonly) ChatAvatarImageView *iconImageView;
@@ -144,4 +148,10 @@ typedef NS_ENUM(NSUInteger, UserDrawerAction) {
 #pragma mark Pending posts
 @interface PendingPostsViewController : UIViewController
 - (id)initWithService:(RedditService *)service;
+@end
+
+#pragma mark Comment stuff
+@interface CommentComposeViewController : UIViewController
+@property (readonly) CommentComposeView *composeView;
+- (void)didTapSendButton:(id)sender;
 @end

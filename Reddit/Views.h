@@ -26,3 +26,26 @@
 @interface ChatAvatarImageView : UIImageView
 - (void)configureWithUser:(User *)user;
 @end
+
+@interface BaseButton : UIButton
+@property (readonly) id actionBlock;
+- (void)onTapped:(id)actionBlock;
+- (void)setAttributedTitleWithString:(NSString *)string;
+@end
+
+#pragma mark Comment stuff
+
+@interface LinkKeyboardAccessoryView : NSObject
+@property (readonly) BaseButton *linkButton;
+@property (readonly) BaseButton *rightButton;
+@end
+
+@interface CommentComposeboardAccessoryView : LinkKeyboardAccessoryView
+@property (readonly) UIStackView *rightStackView;
+@end
+
+@interface BaseAttachmentTextView : UITextView @end
+
+@interface CommentComposeView : UIView
+@property (readonly) BaseAttachmentTextView *replyTextView;
+@end
