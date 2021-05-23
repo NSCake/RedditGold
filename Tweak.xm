@@ -88,3 +88,21 @@
     [self presentViewController:share animated:YES completion:nil];
 }
 %end
+
+/// Disable RPAN
+%hook StreamingUnitDataProvider
+- (BOOL)shouldHideUnit { return YES; }
+%end
+
+/// Disable ads
+%hook AdPost
+- (void)setIsBlankAd:(BOOL)blank { %orig(YES); }
+%end
+
+/// Disable carousels
+%hook DiscoveryUnit
+- (BOOL)enabled { return NO; }
+%end
+// %hook AnyTypeCarouselDataSource
+// + (id)alloc { return nil; }
+// %end
