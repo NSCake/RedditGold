@@ -42,36 +42,6 @@ static CGFloat padding = CGFLOAT_MAX;
 
 // My custom tabs
 
-@interface TBFeedViewController : MainFeedViewController @end
-
-%subclass TBFeedViewController : MainFeedViewController
-- (void)viewDidLoad {
-    %orig;
-    [NSClassFromString(@"AppSettings")
-        addObserver:self
-        forKeyPath:@"defaultFeedMode"
-        options:NSKeyValueObservingOptionNew context:nil
-    ];
-}
-- (void)viewWillAppear:(BOOL)animated {
-    // "Replace" this method while still calling super
-    // (So, we don't want orig) 
-    void (*skipSuper)(id, SEL, BOOL) = (void(*)(id, SEL, BOOL))[[[self superclass] superclass] instanceMethodForSelector:_cmd];
-    skipSuper(self, _cmd, animated);
-
-    [self configureWithURLString:@"https://reddit.com/r/FortniteBR"];
-}
-
-- (NSString *)pageItemText { return @"FortniteBR"; }
-
-- (void)observeValueForKeyPath:(NSString *)keyPath 
-                      ofObject:(id)object 
-                        change:(NSDictionary<NSKeyValueChangeKey, id> *)change 
-                       context:(void *)context {
-
- }
-%end
-
 // Modify Popular to be All without politics or news
 %hook PopularFeedViewController
 - (NSString *)pageItemText { return @"All"; }
@@ -96,7 +66,10 @@ static CGFloat padding = CGFLOAT_MAX;
     %orig(@"https://reddit.com/r/all");
 }
 
-- (void)setCurrentObjects:(NSArray<Post *> *)posts {
+// This was removed at some point before 2021.19
+// - (void)setCurrentObjects:(NSArray<Post *> *)posts {
+// Possibly renamed to `replace`?
+- (void)replaceCurrentObjects:(NSArray<Post *> *)posts {
     NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(Post *post, id bindings) {
         return ![kMutedSubreddits containsObject:post.subreddit.displayName];
     }];

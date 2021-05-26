@@ -6,6 +6,8 @@
 //  Copyright © 2021 Tanner Bennett. All rights reserved.
 //
 
+@class AccountManager;
+
 @interface UIControlTargetAction : NSObject {
     id _target;
     SEL _action;
@@ -20,4 +22,8 @@
 @interface UIButton (Private)
 - (void)setTitle:(NSString *)title;
 @property (readonly) NSArray<UIControlTargetAction *> *_allTargetActions;
+@end
+
+@interface AppDelegate : NSObject
+@property (readonly) AccountManager *accountManager;
 @end

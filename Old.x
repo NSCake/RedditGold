@@ -39,3 +39,9 @@
 }
 
 %end
+
+%hook FeedViewController
+- (void)fetchCarouselDataSourceForDiscoveryModel:(id)model carousel:(id)car withCompletion:(void(^)(id block, BOOL success))original {
+    original(nil, NO);
+}
+%end

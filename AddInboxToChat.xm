@@ -10,20 +10,20 @@
 
 %hook AccountSettings
 - (NSInteger)lastChatTabPage {
-    return 3; // Start on Activity tab
+    return 2; // Start on Activity tab
 }
 %end
 
 %hook ChatHomePagedTabViewController
 
 - (NSArray<UIViewController *> *)viewControllersForChatTabs:(NSArray<NSNumber *> *)tabs {
-    NSArray<UIViewController *> *controllers = %orig(@[@1, @2, @3]);
+    NSArray<UIViewController *> *controllers = %orig(@[/* @1, */ @2, /* @3 */]); // Chat rooms were removed
 
-    RedditService *service = [%c(AccountManager) sharedManager].currentService;
-    InboxViewController *inbox = [[%c(InboxViewController) alloc] initWithService:service];
+    // RedditService *service = [%c(AccountManager) sharedAccountManager].currentService;
+    InboxViewController *inbox = [[%c(InboxViewController) alloc] initWithAccountContext:self.accountContext];
 
     // Chat rooms, chats, notifications, mail
-    return @[controllers[1], controllers[2], inbox.activityController, inbox.mailController];
+    return @[controllers[0], inbox.inboxActivityViewController, inbox.mailController];
 }
 
 %end

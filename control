@@ -1,7 +1,7 @@
 Package: com.nscake.redditgold
 Name: RedditGold
 Depends: mobilesubstrate
-Version: 1.2.0
+Version: 1.3.0~b
 Architecture: iphoneos-arm
 Description: Enhancements to the Reddit app
 Maintainer: Tanner Bennett <thepantsthief@me.com>

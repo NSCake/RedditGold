@@ -6,24 +6,30 @@
 //  Copyright © 2020 Tanner Bennett. All rights reserved.
 //
 
+#import "Models.h"
+
 #pragma mark RedditService
 @interface RedditService : NSObject
+
+@property (readonly) Account *account;
 
 + (NSInteger)defaultFeedMode;
 - (id)initWithAccount:(Account *)account;
 - (void)hidePost:(id)post completion:(id)handler;
-
 
 @end
 
 #pragma mark AccountManager
 @interface AccountManager : NSObject
 
+/// Removed at some point
 @property (readonly, class) AccountManager *sharedManager;
+/// Use this instead, my own addition
+@property (readonly, class) AccountManager *sharedAccountManager;
 
 @property (readonly) NSURLSession *session;
 
-@property (readonly) Account *currentAccount;
+// @property (readonly) Account *currentAccount;
 @property (readonly) Account *anonymousAccount;
 @property (readonly) NSArray<Account *> *accounts;
 @property (readonly) NSArray<Account *> *nonAnonymousAccounts;

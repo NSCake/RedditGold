@@ -13,7 +13,7 @@
 - (void)setViewControllers:(NSMutableArray<UIViewController *> *)controllers {
     // Create the new last tab
     UIViewController *userDrawer = [[%c(UserDrawerViewController) alloc]
-        initWithAccountManager:[%c(AccountManager) sharedManager]
+        initWithAccountContext:self.accountContext
     ];
 
     // Replace the last tab
@@ -74,8 +74,9 @@
     if (self.tabBarController) {
         // Push profile
         [self.navigationController pushViewController:[[%c(UserProfileViewController) alloc]
-            initWithUsername:self.accountManager.currentAccount.username
-            redditService:self.accountManager.currentService
+            initWithUsername:self.accountManager.currentService.account.user.username
+            accountContext:self.accountContext
+            analyticsReferrerInfo:nil
         ] animated:YES];
     } else {
         %orig;
@@ -106,17 +107,18 @@
                 break;
             case UserDrawerActionHistory:
                 toPush = [%c(FeedViewControllerFactory)
-                    aggregateHistoryFeedViewControllerWithRedditService:self.accountManager.currentService
+                    aggregateHistoryFeedViewControllerWithAccountContext:self.accountContext
                 ];
                 break;
             case UserDrawerActionPendingPosts:
                 toPush = [[%c(Reddit.PendingPostsViewController) alloc]
-                    initWithService:self.accountManager.currentService
+                    initWithAccountContext:self.accountContext
                 ];
                 break;
             case UserDrawerActionDrafts:
-                toPush = [[%c(DraftsListViewController) alloc]
-                    initWithService:self.accountManager.currentService
+                // Previously without the `Reddit.`
+                toPush = [[%c(Reddit.DraftsListViewController) alloc]
+                    initWithAccountContext:self.accountContext
                 ];
                 break;
             case UserDrawerActionCreateCommunity:
@@ -142,9 +144,12 @@
     }
 }
 
+%end
+
+%hook Reddit.AccountStatusViewController
+// Used to be in UserDrawerViewController
 - (void)actionSheetViewController:(id)sheet didSelectSwitchToAccount:(id)account {
     %orig;
     [%c(RootViewController) reloadAllControllers];
 }
-
 %end

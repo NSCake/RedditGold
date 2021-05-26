@@ -6,6 +6,8 @@
 //  Copyright © 2020 Tanner Bennett. All rights reserved.
 //
 
+@protocol AccountContext;
+
 @interface ASDisplayNode : NSObject
 @property (readonly) UIView *view;
 @end
@@ -22,7 +24,14 @@
 
 #pragma mark Presenters
 
-@interface PostDetailPresenter : NSObject
+@interface ListingPresenter : NSObject
+@property (readonly) id<AccountContext> accountContext;
+@end
+
+@interface FeedPresenter : ListingPresenter
+@end
+
+@interface PostDetailPresenter : ListingPresenter
 @property (readonly) NSArray<CommentTreeNode *> *currentComments;
 - (id)createTruncatedCommentNetworkSource;
 - (id)createDefaultCommentNetworkSource;
@@ -32,10 +41,10 @@
 @property (readonly) PostDetailPresenter *presenter;
 @end
 
-@interface SavedCategoryPresenter : NSObject
+@interface SavedCategoryPresenter : ListingPresenter
 - (id)initWithService:(RedditService *)service;
 @end
 
-@interface TheatreFeedPresenter : NSObject
+@interface TheatreFeedPresenter : FeedPresenter
 @property (nonatomic) NSArray<TheatreMediaItem *> *currentMediaObjects;
 @end

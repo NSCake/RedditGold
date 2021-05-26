@@ -19,20 +19,23 @@
 - (NSUInteger)indexOfControllerWithHomeFeedType:(NSUInteger)type {
     return 0;
 }
-- (void)showForYouFeedBadgeIfNeeded { }
+
+// Removed by at least 2021.19
+// - (void)showForYouFeedBadgeIfNeeded { }
 %end
 
-%hook CommentCell
-- (void)_handleMenuGesture { return; }
+// Renamed from CommentCell sometime before 2021.19
+// %hook CommentTreeTextNode
+// // - (void)_handleMenuGesture { return; }
 
-- (BOOL)gestureRecognizerShouldBegin:(UILongPressGestureRecognizer *)panGestureRecognizer {
-    return NO;
-}
+// - (BOOL)gestureRecognizerShouldBegin:(UILongPressGestureRecognizer *)panGestureRecognizer {
+//     return NO;
+// }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)menuGesture shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGesture {
-    return YES;
-}
-%end
+// - (BOOL)gestureRecognizer:(UIGestureRecognizer *)menuGesture shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGesture {
+//     return YES;
+// }
+// %end
 
 %hook PostDetailPresenter
 - (void)fetchMoreContentIfNecessary { }
@@ -82,7 +85,7 @@
         Comment *comment = self.delegator.presenter.currentComments[ip.row].comment;
 
         menu.menuItems = @[
-            [TBMenuItem title:@"Text" action:@selector(copyText:) copy:comment.bodyAttributedText.string],
+            [TBMenuItem title:@"Text" action:@selector(copyText:) copy:comment.bodyRichTextAttributed.string],
             [TBMenuItem title:@"Source" action:@selector(copySource:) copy:comment.bodyText],
             [TBMenuItem title:@"Link" action:@selector(copyLink:) copy:comment.sharingPermalinkIncludingDomain]
         ];
@@ -125,14 +128,18 @@
 
 %hook PostActionSheetViewController
 
-- (id)initOverflowActionSheetWithPost:(Post *)post includeSaveItem:(BOOL)save showFlairItem:(BOOL)flair {
+// Renamed by 2021.19
+// - (id)initOverflowActionSheetWithPost:(Post *)post includeSaveItem:(BOOL)save showFlairItem:(BOOL)flair {
+- (id)initWithAccountContext:(id)context post:(Post *)post
+     postActionSheetDelegate:(id)delegate
+             includeSaveItem:(BOOL)save showFlairItem:(BOOL)flair {
     %orig;
 
     if (post.isHlsVideo) {
         ActionSheetItem *copy = [[%c(ActionSheetItem) alloc]
-            initWithLeftIconImage: [UIImage imageNamed:@"icon_link_20"]
-            text: @"Copy media link"
-            identifier: @"kCopyMediaLink"
+            initWithLeftIconImage:[UIImage imageNamed:@"icon_link_20"]
+            text:@"Copy media link"
+            identifier:@"kCopyMediaLink"
             context:post
         ];
         self.items = [self.items arrayByAddingObject:copy];
@@ -153,9 +160,28 @@
 
 %end
 
+%hook RedditUI.VoteButtonNode
+- (id)initWithType:(NSInteger)type overrideTheme:(id)theme shouldUseSmallIcons:(BOOL)smallIcons shouldCenterAlign:(BOOL)center {
+    smallIcons = YES;
+    return %orig;
+}
+%end
+
+%hook Reddit.AwardCTAButtonNode
+- (id)initWithEconomyContext:(id)context shouldUseSmallIcons:(BOOL)smallIcons presentTooltip:(id)tip action:(id)action {
+    smallIcons = YES;
+    return %orig;
+}
+%end
+
 %hook FeedPostCommentBarNode
 
-- (id)initWithPost:(Post *)post options:(id)options {
+- (BOOL)shouldUseSmallIcons { return YES; }
+
+// Renamed by 2021.19
+// - (id)initWithPost:(Post *)post options:(id)options {
+- (id)initWithContext:(id)context post:(Post *)post options:(id)options shouldUseSmallIcons:(BOOL)smallIcons {
+    smallIcons = YES;
     self = %orig;
 
     UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc]
@@ -170,34 +196,8 @@
 %new
 - (void)__didLongPressActionButton:(UIGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateBegan) {
-        [[%c(AccountManager) sharedManager].currentService hidePost:self.post completion:nil];
+        [[%c(AccountManager) sharedAccountManager].currentService hidePost:self.post completion:nil];
     }
 }
 
-%end
-
-void CommentComposeHook(CommentComposeViewController *self) {
-    UIBarButtonItem *item = self.navigationItem.rightBarButtonItem;
-    self.navigationItem.rightBarButtonItem = nil;
-    
-    BaseButton *button = (id)item.customView;
-    
-    CommentComposeboardAccessoryView *toolbar = (id)self.composeView.replyTextView.inputAccessoryView;
-    toolbar.rightButton.hidden = NO;
-    toolbar.rightStackView.hidden = YES;
-    [toolbar.rightButton setAttributedTitleWithString:@"REPLY"];
-    [toolbar.rightButton setValue:[button valueForKey:@"_targetActions"] forKey:@"_targetActions"];
-}
-
-%hook CommentComposeViewController
-- (void)viewDidLoad {
-    %orig;
-    CommentComposeHook((id)self);
-}
-%end
-%hook CommentReplyViewController
-- (void)viewDidLoad {
-    %orig;
-    CommentComposeHook((id)self);
-}
 %end

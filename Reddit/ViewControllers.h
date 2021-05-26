@@ -8,9 +8,17 @@
 
 #import "Views.h"
 
+@protocol FeedPresentable <NSObject>
+@property (readonly) FeedPresenter *feedPresenter;
+@end
+
+#pragma mark Account context
+@protocol AccountContext <NSObject> @end
+@interface AccountContext : NSObject @end
+
 #pragma mark Reddit's Categories
 @interface UIViewController (Reddit)
-- (void)presentShareViewForData:(ShareSheetData *)data;
+- (void)presentShareViewForData:(ShareSheetData *)data accountContext:(id<AccountContext>)context;
 @end
 
 #pragma mark BaseNavigationViewController
@@ -20,6 +28,7 @@
 #pragma mark ListingViewController
 @interface ListingViewController : UIViewController // BaseViewController
 - (id)initWithPresenter:(id)presenter;
+@property (readonly) ListingPresenter *listingPresenter;
 @end
 
 #pragma mark PagedTabViewControllers
@@ -38,6 +47,7 @@
 @interface ChatHomePagedTabViewController : PagedTabViewController
 @property (readonly) NSArray<UIViewController *> *controllers;
 @property (readonly) RedditService *service;
+@property (readonly) AccountContext *accountContext;
 @end
 
 #pragma mark AppSettingsViewController
@@ -46,7 +56,7 @@
 @end
 
 #pragma mark TheatreViewController
-@interface TheatreViewController : UIViewController
+@interface TheatreViewController : ListingViewController <FeedPresentable>
 @end
 
 #pragma mark RootViewController
@@ -56,6 +66,7 @@
 
 #pragma mark MainTabBarController
 @interface MainTabBarController : UITabBarController
+@property (readonly) AccountContext *accountContext;
 @property (readonly) UIButton *postButton;
 @end
 
@@ -69,7 +80,8 @@
 
 #pragma mark FeedViewControllerFactory
 @interface FeedViewControllerFactory : NSObject
-+ (UIViewController *)aggregateHistoryFeedViewControllerWithRedditService:(RedditService *)service;
+// + (UIViewController *)aggregateHistoryFeedViewControllerWithRedditService:(RedditService *)service;
++ (UIViewController *)aggregateHistoryFeedViewControllerWithAccountContext:(AccountContext *)context;
 @end
 
 #pragma mark PostDetailViewController
@@ -82,8 +94,8 @@
 - (void)copyStorageFromIdx:(NSUInteger)idx of:(UIMenuController *)controller;
 @end
 
-#pragma mark SubredditFeedViewController
-@interface SubredditFeedViewController : UIViewController
+#pragma mark SubredditPageViewController
+@interface SubredditPageViewController : UIViewController
 @property Subreddit *subreddit;
 @end
 
@@ -96,7 +108,10 @@
 
 @property (readonly) RedditService *service;
 @property (readonly) UIViewController *mailController; // MailListViewController
-@property (readonly) UIViewController *activityController; // ActivityViewController
+// Removed before 2021.19
+// @property (readonly) UIViewController *activityController; // ActivityViewController
+// Added with v1.3.0
+@property (readonly) UIViewController *inboxActivityViewController; // ActivityViewController
 
 - (void)locallyMarkAllAsRead;
 - (void)actionSheetViewController:(id)controller didSelectItem:(id)item;
@@ -117,12 +132,16 @@ typedef NS_ENUM(NSUInteger, UserDrawerAction) {
 
 @interface UserDrawerViewController : UIViewController
 
-- (id)initWithAccountManager:(AccountManager *)manager;
+// Removed before 2021.19
+// - (id)initWithAccountManager:(AccountManager *)manager;
+// Available at least by 2021.19
+- (id)initWithAccountContext:(AccountContext *)context;
 - (void)pressedSignUpOrLogInButton:(id)sender;
 
 @property (readonly) UIButton *closeButton;
 @property (readonly) ChatAvatarImageView *iconImageView;
 @property (readonly) AccountManager *accountManager;
+@property (readonly) AccountContext *accountContext;
 
 @property (readonly) UITableView *actionsTableView;
 @property (readonly) NSMutableArray<NSNumber *> *availableUserActions;
@@ -133,7 +152,7 @@ typedef NS_ENUM(NSUInteger, UserDrawerAction) {
 
 #pragma mark UserProfileViewController
 @interface UserProfileViewController : UIViewController
-- (id)initWithUsername:(NSString *)username redditService:(RedditService *)service;
+- (id)initWithUsername:(NSString *)username accountContext:(AccountContext *)context analyticsReferrerInfo:(id)info;
 @end
 
 #pragma mark Saved

@@ -6,16 +6,23 @@
 //  Copyright © 2020 Tanner Bennett. All rights reserved.
 //
 
-// RE'd after 4.48
-
 @interface User : NSObject
+@property (readonly) NSString *username; // Original username
+@property (readonly) NSString *title; // User chosen display name
+@property (readonly) NSString *headerTitle; // ie u/Username
+@property (readonly) NSString *descriptionText;
+@property (readonly) NSString *publicDescriptionText;
+@property (readonly) NSString *subscribersCount;
+@property (readonly) NSDate *createdAt;
+@property (readonly) BOOL isEmployeeUser;
+@property (readonly) BOOL hasPremium;
+@property (readonly) NSString *sharingPermalinkIncludingDomain;
 @end
 
-@interface Account : User
+@interface Account : NSObject
 @property (readonly, getter=isNotLoggedIn) BOOL notLoggedIn;
 @property (readonly, getter=isLoggedIn) BOOL loggedIn;
-
-@property (readonly) NSString *username;
+@property (readonly) User *user;
 @end
 
 @interface AppFlowCoordinator : NSObject
@@ -82,18 +89,24 @@
 @interface Comment : NSObject
 @property NSString *author;
 @property NSString *bodyText;
-@property NSAttributedString *bodyAttributedText;
+// @property NSAttributedString *bodyAttributedText;
+@property NSAttributedString *bodyRichTextAttributed;
 @property NSString *pkWithoutPrefix;
 @property NSString *sharingPermalinkIncludingDomain;
 @property NSString *permalink;
 @property NSString *linkTitle;
 @end
 
+// Actually mangled swift name
+@interface PostShareContext : NSObject
+@property (readonly) Post *post;
+@end
+
 @interface ShareSheetData : NSObject
 + (instancetype)dataWithSender:(id)sender analyticsPageType:(NSString *)type;
 @property (readonly) NSURL *shareablePostURL;
 @property UIImage *image;
-@property Post *post;
+@property PostShareContext *postShareContext;
 @property NSURL *url;
 @end
 

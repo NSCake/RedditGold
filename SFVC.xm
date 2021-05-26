@@ -19,11 +19,12 @@
 %end
 
 %hook RichTextDisplayNode
-- (void)richTextTextNode:(id)node didTapURL:(NSURL *)url atPoint:(CGPoint)point {
+// The atRange part was added at least by 2021.19
+- (void)richTextTextNode:(id)node didTapURL:(NSURL *)url atPoint:(CGPoint)point atRange:(NSRange)range {
     NSString *domain = url.host;
-    if ([domain hasSuffix:@"youtube.com"] || [domain hasSuffix:@"youtu.be"]) {
-        [UIApplication.sharedApplication openURL:url];
-    } else if ([domain hasSuffix:@"twitter.com"]) {
+    BOOL isGithub = [domain hasSuffix:@"github.com"] && ![domain containsString:@"gist.github.com"];
+    if ([domain hasSuffix:@"youtube.com"] || [domain hasSuffix:@"youtu.be"] ||
+        [domain hasSuffix:@"twitter.com"] || isGithub) {
         [UIApplication.sharedApplication openURL:url];
     } else {
         %orig;
