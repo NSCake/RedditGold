@@ -109,7 +109,7 @@
 @property (readonly) RedditService *service;
 @property (readonly) UIViewController *mailController; // MailListViewController
 // Removed before 2021.19
-// @property (readonly) UIViewController *activityController; // ActivityViewController
+@property (readonly) UIViewController *activityController; // ActivityViewController
 // Added with v1.3.0
 @property (readonly) UIViewController *inboxActivityViewController; // ActivityViewController
 

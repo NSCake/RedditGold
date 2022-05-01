@@ -10,7 +10,7 @@
 
 %hook AccountSettings
 - (NSInteger)lastChatTabPage {
-    return 2; // Start on Activity tab
+    return 2; // Start on Activity tab, broken
 }
 %end
 
@@ -23,7 +23,7 @@
     InboxViewController *inbox = [[%c(InboxViewController) alloc] initWithAccountContext:self.accountContext];
 
     // Chat rooms, chats, notifications, mail
-    return @[controllers[0], inbox.inboxActivityViewController, inbox.mailController];
+    return @[controllers[0], inbox.activityController, inbox.mailController];
 }
 
 %end
